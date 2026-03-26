@@ -45,6 +45,12 @@ or:
 @load mongodb
 ```
 
+For quick command-line testing after `zkg install`, this also works:
+
+```bash
+zeek -Cr tests/pcaps/mongodb_insert_find.pcap mongodb
+```
+
 `zkg` uses `zkg.meta` in this repository to:
 
 - install scripts from `scripts/`

@@ -25,6 +25,8 @@ zeek -NN | grep Spicy
 
 This is the recommended option because it builds the analyzer on the target machine.
 
+Make sure the machine has `cmake` installed before running `zkg install`.
+
 Install directly from the GitHub repo:
 
 ```bash

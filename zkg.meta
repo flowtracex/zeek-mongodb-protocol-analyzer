@@ -1,0 +1,8 @@
+[package]
+script_dir = scripts
+plugin_dir = dev/build
+build_command = cmake -S dev -B dev/build && cmake --build dev/build
+depends =
+    zeek >= 8.0.0
+aliases = mongodb
+tags = zeek plugin, protocol analyzer, mongodb, spicy, logging

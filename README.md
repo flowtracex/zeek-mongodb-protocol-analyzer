@@ -4,15 +4,16 @@ MongoDB protocol analyzer for Zeek using Spicy.
 
 This repository is organized for normal users first:
 
-- `mongodb.hlto` is the analyzer bundle to install
+- `mongodb.hlto` is the prebuilt analyzer bundle
 - `scripts/` contains the Zeek loader and log logic
 - `tests/pcaps/` contains small sample pcaps for quick testing
 - `legacy_bak/` keeps the older pure-Zeek reference implementation
 - `dev/` contains source and build files for developers
+- `zkg.meta` enables installation through Zeek Package Manager
 
-## Install
+## Requirements
 
-Make sure your Zeek installation has Spicy support available.
+Your Zeek installation must have Spicy support available.
 
 Check with:
 
@@ -20,23 +21,59 @@ Check with:
 zeek -NN | grep Spicy
 ```
 
+## Install Option 1: zkg
+
+This is the recommended option because it builds the analyzer on the target machine.
+
+Install directly from the GitHub repo:
+
+```bash
+zkg install https://github.com/flowtracex/zeek-mongodb-protocol-analyzer
+```
+
+After installation, load the package with either:
+
+```bash
+@load packages
+```
+
+or:
+
+```bash
+@load mongodb
+```
+
+`zkg` uses `zkg.meta` in this repository to:
+
+- install scripts from `scripts/`
+- build the analyzer from `dev/`
+- install the built plugin from `dev/build/`
+
+## Install Option 2: Prebuilt `mongodb.hlto`
+
+This is the quick path.
+
 Copy the analyzer bundle into Zeek's Spicy directory:
 
 ```bash
 cp mongodb.hlto /opt/zeek/lib/zeek/spicy/
 ```
 
-Adjust the destination if your Zeek installation uses a different prefix.
-
-## Run
-
-Load the included Zeek script when replaying traffic:
+Then load the script manually when running Zeek:
 
 ```bash
 zeek -Cr tests/pcaps/mongodb_insert_find.pcap scripts/__load__.zeek
 ```
 
 This writes `mongodb.log` in the directory where you run Zeek.
+
+## Important Note About the Prebuilt Artifact
+
+The included `mongodb.hlto` was built on Ubuntu with the local Zeek/Spicy toolchain used for this repository.
+
+It may work on similar systems, but it is not guaranteed to work on every machine, Zeek version, libc version, or CPU architecture.
+
+If the prebuilt `mongodb.hlto` does not load correctly on your system, use the `zkg` install path instead.
 
 ## What It Logs
 

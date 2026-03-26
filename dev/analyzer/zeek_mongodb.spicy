@@ -1,0 +1,12 @@
+module Zeek_MongoDB;
+
+import MongoDB;
+import zeek;
+
+on MongoDB::Message::%done {
+    zeek::confirm_protocol();
+}
+
+on MongoDB::Messages::%error {
+    zeek::reject_protocol("error while parsing MongoDB");
+}

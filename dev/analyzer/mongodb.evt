@@ -1,0 +1,17 @@
+import MongoDB;
+import Zeek_MongoDB;
+
+protocol analyzer MongoDB over TCP:
+    parse originator with MongoDB::Messages,
+    parse responder with MongoDB::Messages;
+
+on MongoDB::Message -> event MongoDB::message(
+    $conn,
+    $is_orig,
+    self.message_length,
+    self.request_id,
+    self.response_to,
+    self.opcode,
+    self.payload_length,
+    self.payload
+);

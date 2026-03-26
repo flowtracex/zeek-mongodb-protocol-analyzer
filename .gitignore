@@ -1,0 +1,5 @@
+build/
+dev/build/
+*.log
+*.tmp
+.DS_Store

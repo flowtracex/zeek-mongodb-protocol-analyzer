@@ -1,0 +1,41 @@
+module MongoDB;
+
+import spicy;
+
+public type Messages = unit {
+    : Message[];
+};
+
+type LEUInt32 = unit {
+    data: bytes &size=4;
+
+    var value: uint64;
+
+    on %done {
+        self.value = self.data.to_uint(spicy::ByteOrder::Little);
+    }
+};
+
+public type Message = unit {
+    message_length_raw: LEUInt32 &requires=$$.value >= 16;
+    request_id_raw: LEUInt32;
+    response_to_raw: LEUInt32;
+    opcode_raw: LEUInt32;
+
+    payload: bytes &size=self.message_length_raw.value - 16;
+
+    var message_length: uint64;
+    var request_id: uint64;
+    var response_to: uint64;
+    var opcode: uint64;
+    var payload_length: uint64;
+
+    on %done {
+        self.message_length = self.message_length_raw.value;
+        self.request_id = self.request_id_raw.value;
+        self.response_to = self.response_to_raw.value;
+        self.opcode = self.opcode_raw.value;
+
+        self.payload_length = self.message_length - 16;
+    }
+};
